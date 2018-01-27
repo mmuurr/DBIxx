@@ -1,0 +1,75 @@
+setMethod("str", signature(object = "DBIConnection"), function(object) {
+    str(DBI::dbGetInfo(object))
+})
+
+setMethod("as.character", signature(x = "DBIConnection"), function(x) {
+    capture.output(show(x))
+})
+
+
+## This splits `statement` into individual SQL statements.
+## All statements prior to the final statement are executed via `DBI::dbExecute()`.
+## The final SQL statement is then returned to the caller.
+.execute_head <- function(conn, statement, ...) {
+    stmts <- sqlparse::split(statement)
+    purrr::walk(head(stmts, -1), function(stmt) DBI::dbExecute(conn, stmt, ...))
+    return(tail(stmts, 1))
+}
+
+
+## Tries to cast a data.frame to a package-specific table.
+.cast_table <- function(df, cls = c("tibble", "data.table", "data.frame")) {
+    if(!is.data.frame(df)) return(df)
+    
+    cls <- match.arg(cls)
+    tryCatch({
+        return(switch(cls,
+                      "tibble" = tibble::as_tibble(df),
+                      "data.table" = data.table::as.data.table(df),
+                      "data.frame" = df))
+    }, error = function(e) {
+        warning(conditionMessage(e), call. = FALSE)
+        return(df)
+    })
+}
+
+
+dbFetch <- function(res, n = -1, ..., .as = c("tibble", "data.table", "data.frame")) {
+    .cast_table(DBI::dbFetch(res, n, ...), match.arg(.as))
+}
+
+
+dbExecute <- function(conn, statement, ...) {
+    stmt <- .execute_head(conn, statement, ...)
+    DBI::dbExecute(conn, stmt, ...)
+}
+dbExecuteFile <- function(conn, file, ..., .locale = default_locale()) {
+    dbExecute(conn, readr::read_file(file, .locale), ...)
+}
+
+
+dbSendStatement <- function(conn, statement, ...) {
+    stmt <- .execute_head(conn, statement, ...)
+    DBI::dbSendStatement(conn, stmt, ...)
+}
+dbSendStatementFile <- function(conn, file, ..., .locale = default_locale()) {
+    dbSendStatement(conn, readr::read_file(file, .locale), ...)
+}
+
+
+dbSendQuery <- function(conn, statement, ...) {
+    stmt <- .execute_head(conn, statement, ...)
+    DBI::dbSendQuery(conn, stmt, ...)
+}
+dbSendQueryFile <- function(conn, file, ..., locale = default_locale()) {
+    dbSendQuery(conn, readr::read_file(file, .locale), ...)
+}
+
+
+dbGetQuery <- function(conn, statement, ..., .as = c("tibble", "data.table", "data.frame")) {
+    stmt <- .execute_head(conn, statement, ...)
+    .cast_table(DBI::dbGetQuery(conn, stmt, ...), match.arg(.as))
+}
+dbGetQueryFile <- function(conn, file, ..., .as = c("tibble", "data.table", "data.frame"), .locale = default_locale()) {
+    dbGetQuery(conn, readr::read_file(file, .locale), ...)
+}

@@ -1,0 +1,5 @@
+tryCatch({
+    foo::bar()
+}, error = function(e) {
+    print("caught the error!")
+})
