@@ -1,6 +1,6 @@
 Package: DBIxx
 Title: DBI++
-Version: 1.0.1
+Version: 1.0.2
 Description: Extension to DBI.
 Authors@R: person("Murat", "Tasan", email = "mmuurr@gmail.com", role = c("aut", "cre"))
 URL: https://github.com/mmuurr/DBIxx

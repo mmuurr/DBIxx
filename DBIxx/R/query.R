@@ -37,7 +37,7 @@ dbExecute <- function(conn, statement, ...) {
     stmts <- .execute_head(conn, statement, ...)
     DBI::dbExecute(conn, stmts, ...)
 }
-dbExecuteFile <- function(conn, file, ..., .locale = default_locale()) {
+dbExecuteFile <- function(conn, file, ..., .locale = readr::default_locale()) {
     dbExecute(conn, readr::read_file(file, .locale), ...)
 }
 
@@ -46,7 +46,7 @@ dbSendStatement <- function(conn, statement, ...) {
     stmts <- .execute_head(conn, statement, ...)
     DBI::dbSendStatement(conn, stmts, ...)
 }
-dbSendStatementFile <- function(conn, file, ..., .locale = default_locale()) {
+dbSendStatementFile <- function(conn, file, ..., .locale = readr::default_locale()) {
     dbSendStatement(conn, readr::read_file(file, .locale), ...)
 }
 
@@ -55,7 +55,7 @@ dbSendQuery <- function(conn, statement, ...) {
     stmts <- .execute_head(conn, statement, ...)
     DBI::dbSendQuery(conn, stmts, ...)
 }
-dbSendQueryFile <- function(conn, file, ..., .locale = default_locale()) {
+dbSendQueryFile <- function(conn, file, ..., .locale = readr::default_locale()) {
     dbSendQuery(conn, readr::read_file(file, .locale), ...)
 }
 
@@ -64,6 +64,6 @@ dbGetQuery <- function(conn, statement, ..., .as_f = getOption("DBIxx::.as_f")) 
     stmts <- .execute_head(conn, statement, ...)
     .cast_table(DBI::dbGetQuery(conn, stmts, ...), .as_f)
 }
-dbGetQueryFile <- function(conn, file, ..., .as_f = getOption("DBIxx::.as_f")) {
+dbGetQueryFile <- function(conn, file, ..., .locale = readr::default_locale(), .as_f = getOption("DBIxx::.as_f")) {
     dbGetQuery(conn, readr::read_file(file, .locale), ..., .as_f = .as_f)
 }
