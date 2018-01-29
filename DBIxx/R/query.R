@@ -34,8 +34,8 @@ dbFetch <- function(res, n = -1, ..., .as_f = getOption("DBIxx::.as_f")) {
 
 
 dbExecute <- function(conn, statement, ...) {
-    stmts <- .execute_head(conn, statement, ...)
-    DBI::dbExecute(conn, stmts, ...)
+    final_stmt <- .execute_head(conn, statement, ...)
+    DBI::dbExecute(conn, final_stmt, ...)
 }
 dbExecuteFile <- function(conn, file, ..., .locale = readr::default_locale()) {
     dbExecute(conn, readr::read_file(file, .locale), ...)
@@ -43,8 +43,8 @@ dbExecuteFile <- function(conn, file, ..., .locale = readr::default_locale()) {
 
 
 dbSendStatement <- function(conn, statement, ...) {
-    stmts <- .execute_head(conn, statement, ...)
-    DBI::dbSendStatement(conn, stmts, ...)
+    final_stmt <- .execute_head(conn, statement, ...)
+    DBI::dbSendStatement(conn, final_stmt, ...)
 }
 dbSendStatementFile <- function(conn, file, ..., .locale = readr::default_locale()) {
     dbSendStatement(conn, readr::read_file(file, .locale), ...)
@@ -52,8 +52,8 @@ dbSendStatementFile <- function(conn, file, ..., .locale = readr::default_locale
 
 
 dbSendQuery <- function(conn, statement, ...) {
-    stmts <- .execute_head(conn, statement, ...)
-    DBI::dbSendQuery(conn, stmts, ...)
+    final_stmt <- .execute_head(conn, statement, ...)
+    DBI::dbSendQuery(conn, final_stmt, ...)
 }
 dbSendQueryFile <- function(conn, file, ..., .locale = readr::default_locale()) {
     dbSendQuery(conn, readr::read_file(file, .locale), ...)
@@ -61,8 +61,8 @@ dbSendQueryFile <- function(conn, file, ..., .locale = readr::default_locale()) 
 
 
 dbGetQuery <- function(conn, statement, ..., .as_f = getOption("DBIxx::.as_f")) {
-    stmts <- .execute_head(conn, statement, ...)
-    .cast_table(DBI::dbGetQuery(conn, stmts, ...), .as_f)
+    final_stmt <- .execute_head(conn, statement, ...)
+    .cast_table(DBI::dbGetQuery(conn, final_stmt, ...), .as_f)
 }
 dbGetQueryFile <- function(conn, file, ..., .locale = readr::default_locale(), .as_f = getOption("DBIxx::.as_f")) {
     dbGetQuery(conn, readr::read_file(file, .locale), ..., .as_f = .as_f)
