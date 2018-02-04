@@ -1,0 +1,17 @@
+# reference:
+#  - title: "DBIConnection methods"
+#    contents:
+#     - DBIConnection-methods
+ # - title: "Re-defined DBI functions"
+ #   contents:
+ #    - dbSendStatement
+ #    - dbSendQuery
+ #    - dbFetch
+ #    - dbExecute
+ #    - dbGetQuery
+ # - title: "New read-SQL-from-file functions"
+ #   contents:
+ #    - dbSendStatementFile
+ #    - dbSendQueryFile
+ #    - dbExecuteFile
+ #    - dbGetQueryFile

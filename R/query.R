@@ -28,6 +28,7 @@
 }
 
 
+#' @inherit DBI::dbFetch
 dbFetch <- function(res, n = -1, ..., .as_f = getOption("DBIxx::.as_f")) {
     .cast_table(DBI::dbFetch(res, n, ...), .as_f)
 }
