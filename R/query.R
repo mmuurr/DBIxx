@@ -9,8 +9,8 @@
     stmts <- statement %>%
         sqlparse::format(strip_comments = TRUE) %>%
         sqlparse::split() %>%
-        map_chr(stringr::str_trim) %>%
-        keep(function(x) stringr::str_length(x) > 0)
+        purrr::map_chr(stringr::str_trim) %>%
+        purrr::keep(function(x) stringr::str_length(x) > 0)
     purrr::walk(head(stmts, -1), function(stmt) DBI::dbExecute(conn, stmt, ...))
     return(tail(stmts, 1))
 }

@@ -1,12 +1,12 @@
 Package: DBIxx
 Title: DBI++
-Version: 1.0.3
+Version: 1.0.4
 Description: Extension to DBI.
 Authors@R: person("Murat", "Tasan", email = "mmuurr@gmail.com", role = c("aut", "cre"))
 URL: https://github.com/mmuurr/DBIxx
 BugReports: https://github.com/mmuurr/DBIxx/issues
 Depends: R (>= 3.3.3)
-Imports: methods, DBI, sqlparse, purrr, readr
+Imports: methods, DBI, sqlparse, purrr, readr, tibble, magrittr
 Suggests: tibble
 License: MIT + file LICENSE
 Encoding: UTF-8
